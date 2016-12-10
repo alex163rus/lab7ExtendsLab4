@@ -12,20 +12,35 @@ import java.util.Random;
  *
  * @author Алексей
  */
-
 public class Squad implements Cloneable {
 
     private String squadName;
     private ArrayList<Warrior> warriors;
 
-    public Squad(String squadName, Warrior[] warriorsAll) {
+    public Squad(String squadName) {
         this.squadName = squadName;
         this.warriors = new ArrayList<>();
-        for (Warrior warrior : warriorsAll) {
+    }
+
+    public Squad() {
+        this.warriors = new ArrayList<>();
+    }
+
+    public void addWarrior(Warrior warrior) {
+        warriors.add(warrior);
+        warrior.setSquadName(squadName);
+    }
+
+    public void setSquadName(String squadName) {
+        this.squadName = squadName;
+    }
+
+    public void setWarriors(ArrayList<Warrior> warriorsAll) {
+        warriorsAll.forEach((Warrior warrior) -> {
             if (warrior.getSquadName().equals(squadName)) {
                 warriors.add(warrior);
             }
-        }
+        });
     }
 
     public Warrior getRandomWarrior() {
@@ -49,6 +64,17 @@ public class Squad implements Cloneable {
         return false;
     }
 
+    public int getAliveCountWarriors() {
+        int aliveCount = 0;
+        for (Warrior warrior : warriors) {
+            if (warrior.isAlive()) {
+                ++aliveCount;
+            }
+        }
+        return aliveCount;
+    }
+
+    @Override
     public Squad clone() throws CloneNotSupportedException {
         Squad ob = (Squad) super.clone();
         ob.squadName = squadName;
@@ -71,4 +97,5 @@ public class Squad implements Cloneable {
     public int getWarriorsCount() {
         return warriors.size();
     }
+
 }

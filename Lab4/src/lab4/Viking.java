@@ -8,16 +8,16 @@ package lab4;
 public class Viking extends Fighter {
 
     public Viking(String fighterName, String squadName) {
-        super(fighterName, 100, 50, squadName);
+        super(fighterName, 120, 20, squadName);
     }
 
     public Viking(String fighterName) {
-        super(fighterName, 100, 50);
+        super(fighterName, 120, 20);
     }
 
     @Override
     public String toString() {
-        return "Викинг " + getSquadName() + " " + super.toString();
+        return "Викинг " + super.toString();
     }
 
 }

@@ -12,16 +12,16 @@ package lab4;
 public class Wizard extends Fighter {
 
     public Wizard(String fighterName) {
-        super(fighterName, 30, 90);
+        super(fighterName, 100, 30);
     }
 
     public Wizard(String fighterName, String squadName) {
-        super(fighterName, 30, 90, squadName);
+        super(fighterName, 100, 30, squadName);
     }
 
     @Override
     public String toString() {
-        return "Волшебник " + getSquadName() + " " + super.toString();
+        return "Волшебник " + super.toString();
     }
 
 }

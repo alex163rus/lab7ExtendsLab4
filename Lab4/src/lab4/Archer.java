@@ -12,16 +12,16 @@ package lab4;
 public class Archer extends Fighter {
 
     public Archer(String fighterName) {
-        super(fighterName, 80, 70);
+        super(fighterName, 130, 15);
     }
 
     public Archer(String fighterName, String squadName) {
-        super(fighterName, 80, 70, squadName);
+        super(fighterName, 130, 15, squadName);
     }
 
     @Override
     public String toString() {
-        return "Лучник " + getSquadName() + " " + super.toString();
+        return "Лучник " + super.toString();
     }
 
 }
