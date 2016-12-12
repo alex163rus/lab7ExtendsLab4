@@ -51,7 +51,7 @@ public class MainFrame extends JFrame {
         initComponent();
     }
 
-    private void initComponent() {
+    private void initComponent() { //этот метод ОЧЕНЬ большой. его следует разбить на несколько.
         TextLabel numberRaund = new TextLabel("Раунд №:0", SwingConstants.CENTER);
         TextLabel timeButtle = new TextLabel("Время с начала :0 минут", SwingConstants.CENTER);
 
@@ -109,7 +109,7 @@ public class MainFrame extends JFrame {
         c.gridy = 3;
         add(livingsSquadRight, c);
 
-        //средняя колонка 
+        //средняя колонка
         c.weightx = 1;
 
         c.gridx = 1;
@@ -138,7 +138,7 @@ public class MainFrame extends JFrame {
         JMenuItem newButtle = new JMenuItem("Новая битва");
         jMenu.add(newButtle);
 
-        JMenuItem renameSquads = new JMenuItem("Редактировать имена");
+        JMenuItem renameSquads = new JMenuItem("Редактировать имена"); //не очень хорошо прятать в меню обязательные для заполнения формы
         jMenu.add(renameSquads);
 
         JMenuItem restructureSquads = new JMenuItem("Редактировать состав отрядов");
@@ -183,10 +183,10 @@ public class MainFrame extends JFrame {
                     return;
                 }
                 if (checkCorrectName(leftName.getText())) {
-                    nameSquadLeft.setText(leftName.getText().substring(0, 1).toUpperCase() + leftName.getText().substring(1));
+                    nameSquadLeft.setText(leftName.getText().substring(0, 1).toUpperCase() + leftName.getText().substring(1)); //много операций в одной строке. стоит подготовку имени вынести в отдельную строку, присвоив его к новой переменной с понятным именем.
                 } else {
                     JOptionPane.showMessageDialog(startButtle, "Имя первого отряда введено неверно", "Ошибка!", JOptionPane.ERROR_MESSAGE);
-                    return;
+                    return; //а если оба имени введены неверно, пользователь узнает об этом, только когда исправит первое имя
                 }
                 if (checkCorrectName(rightName.getText())) {
                     nameSquadRight.setText(rightName.getText().substring(0, 1).toUpperCase() + rightName.getText().substring(1));
@@ -205,12 +205,13 @@ public class MainFrame extends JFrame {
                 return;
             }
             JComboBox selectWarrior = new JComboBox();
-            //как я понял задачу "независимости" от классов бойцов, 
-            //в данном месте должен быть поиск всех классов, 
+            //как я понял задачу "независимости" от классов бойцов,
+            //в данном месте должен быть поиск всех классов,
             //которые реализуют интерфейс Warrior, а в моем случае, которые являются наследниками класса Fighter
             //и автоматическое добавление найденных классов в JComboBox.
-            //Пробовал найти решение с помощью рефлексии - не вышло. 
+            //Пробовал найти решение с помощью рефлексии - не вышло.
             //Поэтому добавляю JComboBox названия и работаю с классами вручную.
+            //технически рефлексию использовать можно, но это было бы лишним усложнением. подумайте, мы бы решили задачу, готовя список бойцов просто в другом классе?
             selectWarrior.addItem("Лучник");
             selectWarrior.addItem("Викинг");
             selectWarrior.addItem("Волшебник");
@@ -221,7 +222,7 @@ public class MainFrame extends JFrame {
             });
 
             JCheckBox otradLeft = new JCheckBox("В отряд: \"" + nameSquadLeft.getText() + "\"");
-            otradLeft.setForeground(Color.red);
+            otradLeft.setForeground(Color.red); //Color.RED. косяк разработчиков java, что они изначально назвали константы строчными буквами. но теперь у нас есть с заглавными, и надо использовать их.
             JCheckBox otradRight = new JCheckBox("В отряд: \"" + nameSquadRight.getText() + "\"");
             otradRight.setForeground(Color.BLUE);
 
@@ -251,7 +252,7 @@ public class MainFrame extends JFrame {
                 }
                 if (otradRight.isSelected()) {
                     squadRight.addWarrior(getFighter(selectWarrior.getSelectedIndex(), fighterNameField.getText()));
-                }
+                }//если ничего не выбрано, по нажатию на кнопку ничего не происходит, и пользователь недоумевает. либо показать ошибку, либо заменить checkbox на группу radiobutton
                 if (randomName.isSelected()) {
                     fighterNameField.setEnabled(false);
                     fighterNameField.setText(Name.getRandName());
@@ -335,7 +336,7 @@ public class MainFrame extends JFrame {
                 if (squadLeft.hasAliveWarriors()) {
                     arena.addText("\nПобедила команда \"" + squadLeft + "\"!");
                     JOptionPane.showMessageDialog(startButtle, "Бой закончен! \nПобедила команда \"" + squadLeft + "\"!", "GameOver :(", JOptionPane.INFORMATION_MESSAGE);
-                } else {
+                } else { //2 раза одно и то же. выше же сделано нормально через переменные
                     arena.addText("\nПобедила команда \"" + squadRight + "\"!");
                     JOptionPane.showMessageDialog(startButtle, "Бой закончен! \nПобедила команда \"" + squadRight + "\"!", "GameOver :(", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -356,10 +357,10 @@ public class MainFrame extends JFrame {
             case 2:
                 return new Wizard(fighterName);
         }
-        return null;
+        return null; //всегда лучше возвращать какое-нибудь значение по-умолчанию либо сразу бросать исключение, напр UnsupportedOperationException
     }
 
-    private boolean checkCorrectName(String name) {
+    private boolean checkCorrectName(String name) { //непонятно, зачем введены ограничения на имя отрядов, почему нельзя назвать, например "Крылья Советов"?
         Pattern pattern = Pattern.compile("^[а-яА-ЯёЁa-zA-Z][а-яА-ЯёЁa-zA-Z0-9№_]{1,20}$");
         return pattern.matcher(name).matches();
     }
